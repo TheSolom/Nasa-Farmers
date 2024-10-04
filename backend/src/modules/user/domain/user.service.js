@@ -4,7 +4,6 @@ import HttpStatusCodes from '../../../shared/utils/httpStatusCodes.js';
 
 export const getUserById = async (userId) => {
     const user = await User.findById(userId);
-
     if (!user) {
         throw new ErrorHandler('User not found', HttpStatusCodes.NOT_FOUND);
     }
@@ -14,7 +13,6 @@ export const getUserById = async (userId) => {
 
 export const getUserByEmail = async (email) => {
     const user = await User.findOne({ email });
-
     if (!user) {
         throw new ErrorHandler('User not found', HttpStatusCodes.NOT_FOUND);
     }
