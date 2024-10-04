@@ -4,10 +4,8 @@ import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
 import morgan from 'morgan';
-import mongoose from 'mongoose';
 import setupRoutes from './routes.js';
-import ErrorHandler from './shared/utils/error.handler.js';
-import HttpStatusCodes from './shared/utils/httpStatusCodes.js';
+import dbConnection from './shared/config/db.js';
 import errorMiddleware from './shared/middleware/error.js';
 
 const inProduction = process.env.NODE_ENV === 'production';
@@ -24,11 +22,7 @@ app.use(morgan(inProduction ? 'combined' : 'dev'));
 
 setupRoutes(app, '/api/v1');
 
-try {
-    await mongoose.connect(process.env.MONGO_URI);
-} catch (error) {
-    throw new ErrorHandler(error.message, HttpStatusCodes.INTERNAL_SERVER_ERROR, null, true);
-}
+await dbConnection();
 
 app.use(errorMiddleware);
 
