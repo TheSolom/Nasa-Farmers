@@ -4,9 +4,19 @@ import ErrorHandler from '../../../shared/utils/error.handler.js';
 import HttpStatusCodes from '../../../shared/utils/httpStatusCodes.js';
 
 export const registerUser = async (userData) => {
-    const { _id: userId } = await User.create(userData);
+    const DUPLICATE_KEY_ERROR_CODE = 11000;
 
-    return userId;
+    try {
+        const user = await User.create(userData);
+
+        const { _doc: { password: _, __v, ...userWithoutPassword } } = user;
+        return userWithoutPassword;
+    } catch (error) {
+        if (error.code === DUPLICATE_KEY_ERROR_CODE) {
+            throw new ErrorHandler('User already exists', HttpStatusCodes.CONFLICT);
+        }
+        throw error;
+    }
 };
 
 export const checkUserCredentials = async (userCredentials) => {
@@ -18,6 +28,6 @@ export const checkUserCredentials = async (userCredentials) => {
         throw new ErrorHandler('Incorrect email or password', HttpStatusCodes.UNAUTHORIZED);
     }
 
-    const { password: _, ...userWithoutPassword } = user;
+    const { _doc: { password: _, __v, ...userWithoutPassword } } = user;
     return userWithoutPassword;
 };
