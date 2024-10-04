@@ -1,4 +1,4 @@
-import HttpStatusCodes from '../utils/HttpStatusCodes.js';
+import HttpStatusCodes from '../utils/httpStatusCodes.js';
 import { verifyToken } from '../../modules/auth/domain/token.service.js';
 import ErrorHandler from '../utils/error.handler.js';
 
