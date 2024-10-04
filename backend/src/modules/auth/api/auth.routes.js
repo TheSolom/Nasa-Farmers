@@ -7,7 +7,7 @@ import {
 import {
     register,
     login,
-} from '../domain/auth.controller.js';
+} from '../api/auth.controller.js';
 import validateRequest from '../../../shared/middleware/validation.js';
 
 const router = Router();
