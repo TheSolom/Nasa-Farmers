@@ -2,6 +2,7 @@ import HttpStatusCodes from './shared/utils/httpStatusCodes.js';
 import ErrorHandler from './shared/utils/error.handler.js';
 import authRoutes from './modules/auth/api/auth.routes.js';
 import userRoutes from './modules/user/api/user.routes.js';
+import locationRoutes from './modules/location/api/location.routes.js';
 
 const setupRoutes = (app, prefix = '') => {
     app.get([prefix, '/', '/api', '/api/v1'], (_req, res, _next) => {
@@ -13,6 +14,7 @@ const setupRoutes = (app, prefix = '') => {
 
     app.use(`${prefix}/auth`, authRoutes);
     app.use(`${prefix}/users`, userRoutes);
+    app.use(`${prefix}/locations`, locationRoutes);
 
     app.all('*', (req, _res, next) => {
         next(new ErrorHandler('Route not found', HttpStatusCodes.BAD_REQUEST, `${req.method} ${req.url}`));
