@@ -7,10 +7,7 @@ export const registerUser = async (userData) => {
     const DUPLICATE_KEY_ERROR_CODE = 11000;
 
     try {
-        const user = await User.create(userData);
-
-        const { _doc: { password: _, __v, ...userWithoutPassword } } = user;
-        return userWithoutPassword;
+        return User.create(userData);
     } catch (error) {
         if (error.code === DUPLICATE_KEY_ERROR_CODE) {
             throw new ErrorHandler('User already exists', HttpStatusCodes.CONFLICT);
@@ -28,6 +25,5 @@ export const checkUserCredentials = async (userCredentials) => {
         throw new ErrorHandler('Incorrect email or password', HttpStatusCodes.UNAUTHORIZED);
     }
 
-    const { _doc: { password: _, __v, ...userWithoutPassword } } = user;
-    return userWithoutPassword;
+    return user;
 };
